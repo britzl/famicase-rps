@@ -1,0 +1,67 @@
+images {
+  image: "/assets/images/paper.png"
+}
+images {
+  image: "/assets/images/rock.png"
+}
+images {
+  image: "/assets/images/scissor.png"
+}
+images {
+  image: "/assets/images/arnie.png"
+}
+images {
+  image: "/assets/images/nerd.png"
+}
+images {
+  image: "/assets/images/dojo 2.png"
+}
+images {
+  image: "/assets/images/transparent1px.png"
+}
+images {
+  image: "/assets/images/panel_blue.png"
+}
+images {
+  image: "/assets/images/floor_posterize.png"
+}
+images {
+  image: "/assets/images/heart.png"
+}
+animations {
+  id: "gesture"
+  images {
+    image: "/assets/images/Flash/flash00.png"
+  }
+  images {
+    image: "/assets/images/Flash/flash04.png"
+  }
+  images {
+    image: "/assets/images/Flash/flash02.png"
+  }
+  images {
+    image: "/assets/images/Flash/flash01.png"
+  }
+  images {
+    image: "/assets/images/Flash/flash05.png"
+  }
+  images {
+    image: "/assets/images/Flash/flash06.png"
+  }
+  images {
+    image: "/assets/images/Flash/flash03.png"
+  }
+  images {
+    image: "/assets/images/Flash/flash08.png"
+  }
+  images {
+    image: "/assets/images/Flash/flash07.png"
+  }
+  playback: PLAYBACK_LOOP_FORWARD
+  fps: 10
+  flip_horizontal: 0
+  flip_vertical: 0
+}
+margin: 0
+extrude_borders: 2
+inner_padding: 0

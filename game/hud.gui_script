@@ -1,0 +1,42 @@
+local function update_hearts(heart_node, amount, direction)
+	local hearts = {}
+	local initial_pos = gui.get_position(heart_node)
+	for i=1,amount do
+		local heart = gui.clone(heart_node)
+		gui.set_enabled(heart, true)
+		table.insert(hearts, heart)
+		gui.set_position(heart, initial_pos + vmath.vector3(20, 0, 0) * (i - 1) * direction)
+	end
+	return hearts
+end
+
+function init(self)
+	self.opponent_portrait = gui.get_node("opponent_portrait")
+	self.opponent_name = gui.get_node("opponent_name")
+	self.player_portrait = gui.get_node("player_portrait")
+	
+	self.opponent_heart = gui.get_node("opponent_heart")
+	self.player_heart = gui.get_node("player_heart")
+	gui.set_enabled(self.opponent_heart, false)
+	gui.set_enabled(self.player_heart, false)
+	
+	self.opponent_hearts = {}
+	self.player_hearts = {}
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("update_opponent") then
+		gui.play_flipbook(self.opponent_portrait, message.portrait)
+		gui.set_text(self.opponent_name, message.name)
+		
+		for _,node in pairs(self.opponent_hearts) do
+			gui.delete_node(node)
+		end
+		self.opponent_hearts = update_hearts(self.opponent_heart, message.health, 1)
+	elseif message_id == hash("update_player") then
+		for _,node in pairs(self.player_hearts) do
+			gui.delete_node(node)
+		end
+		self.player_hearts = update_hearts(self.player_heart, message.health, -1)
+	end
+end

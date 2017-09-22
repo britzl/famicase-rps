@@ -1,0 +1,14 @@
+function init(self)
+	gui.set_render_order(15)
+end
+
+function on_message(self, message_id, message, sender)
+	print("dialog on_message", message_id)
+	if message_id == hash("show") then
+		gui.set_text(gui.get_node("text"), message.text)
+		gui.play_flipbook(gui.get_node("portrait"), message.portrait)
+		gui.animate(gui.get_node("bg"), gui.PROP_POSITION, vmath.vector3(320, 568, 0), gui.EASING_OUTQUAD, 0.8)
+	elseif message_id == hash("hide") then
+		gui.animate(gui.get_node("bg"), gui.PROP_POSITION, vmath.vector3(320, 1568, 0), gui.EASING_INQUAD, 0.8)
+	end
+end

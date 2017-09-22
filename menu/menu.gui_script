@@ -1,0 +1,42 @@
+local gooey = require "gooey.gooey"
+local monarch = require "monarch.monarch"
+
+function init(self)
+	gooey.acquire_input()
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	-- Add update code here
+	-- Remove this function if not needed
+end
+
+function on_message(self, message_id, message, sender)
+	print("menu", message_id)
+	-- Add message-handling code here
+	-- Remove this function if not needed
+end
+
+function on_input(self, action_id, action)
+	gooey.button("training", action_id, action, function()
+		print("training")
+		monarch.show(hash("game"), nil, function()
+			msg.post("game:/game#tutorial", "start", { opponent = "tutorial", opponent_health = 3, player_health = 6 })
+		end)
+	end)
+	gooey.button("quickbattle", action_id, action, function()
+		print("quickbattle")
+		monarch.show(hash("game"), nil, function()
+			msg.post("game:/game#normal", "start", { opponent = "arnie", opponent_health = 3, player_health = 6 })
+		end)
+	end)
+end
+
+function on_reload(self)
+	-- Add input-handling code here
+	-- Remove this function if not needed
+end
