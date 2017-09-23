@@ -12,17 +12,24 @@ local function hide_dialog()
 	msg.post("dialog", "hide")
 end
 
-local function update_opponent(opponent, score)
-	msg.post("hud", "update_opponent", { portrait = opponent.portrait, name = opponent.name, score = score.opponent })
+local function update_opponent(opponent, health)
+	msg.post("opponent#portrait", "play_flipbook", { id = opponent.portrait })
+	label.set_text("opponent#text", opponent.name)
+	for i=1,4 do
+		msg.post("opponent#health" .. i, health.opponent >= i and "enable" or "disable")
+	end
 end
 
-local function update_player(player, score)
-	msg.post("hud", "update_player", { portrait = player.portrait, score = score.player })
+local function update_player(player, health)
+	msg.post("player#portrait", "play_flipbook", { id = player.portrait })
+	for i=1,4 do
+		msg.post("player#health" .. i, health.player >= i and "enable" or "disable")
+	end
 end
 
 
 local function point_to_screen(p)
-	return vmath.vector3(70 + (p.x * 500), 568 + ((p.y - 0.5) * 500), 0)
+	return vmath.vector3(35 + (p.x * 250), 284 + ((p.y - 0.5) * 250), 0)
 end
 
 local function show_gesture(symbol)
@@ -45,11 +52,11 @@ local function tutorial(message)
 	local opponent = opponents[message.opponent]
 	local player = { portrait = hash("player") }
 	local health = { player = 6, opponent = 3 }
-	update_opponent(opponent, score)
-	update_player(player, score)
+	update_opponent(opponent, health)
+	update_player(player, health)
 
 	
-	show_dialog(opponent.portrait, "Welcome to the school of Rock, Paper & Scissors!")
+	show_dialog(opponent.portrait, "Welcome to the Academy of Rock, Paper & Scissors!")
 	flow.until_input_released()
 	
 	show_dialog(opponent.portrait, "Ok, lets get started!\n\nThe first rule of RPS is that Rock beats Scissors. Got it?")

@@ -4,7 +4,7 @@ dependencies = https://github.com/britzl/ludobits/archive/1.3.3.zip, https://git
 
 [bootstrap]
 main_collection = /controller/controller.collectionc
-render = /orthographic/render/orthographic.renderc
+render = /render/rps.renderc
 
 [input]
 game_binding = /input/game.input_bindingc
@@ -52,4 +52,8 @@ app_icon_192x192 = /assets/appicons/icon_192.png
 [physics]
 debug = 0
 gravity_y = -20.0
+
+[graphics]
+default_texture_min_filter = nearest
+default_texture_mag_filter = nearest
 

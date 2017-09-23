@@ -27,11 +27,18 @@ local function hide_dialog()
 end
 
 local function update_opponent(opponent, health)
-	msg.post("hud", "update_opponent", { portrait = opponent.portrait, name = opponent.name, health = health.opponent })
+	msg.post("opponent#portrait", "play_flipbook", { id = opponent.portrait })
+	label.set_text("opponent#text", opponent.name)
+	for i=1,4 do
+		msg.post("opponent#health" .. i, health.opponent >= i and "enable" or "disable")
+	end
 end
 
 local function update_player(player, health)
-	msg.post("hud", "update_player", { portrait = player.portrait, health = health.player })
+	msg.post("player#portrait", "play_flipbook", { id = player.portrait })
+	for i=1,4 do
+		msg.post("player#health" .. i, health.player >= i and "enable" or "disable")
+	end
 end
 
 local function normal_game(message, sender)
@@ -47,8 +54,8 @@ local function normal_game(message, sender)
 	update_player(player, health)
 	
 	GESTURE.add(function(gesture)
-		local id = rps.spawn_symbol(gesture.symbol, vmath.vector3(320, -200, 0), { collisions = false })
-		go.animate(id, "position", go.PLAYBACK_ONCE_PINGPONG, vmath.vector3(320, 200, 0), go.EASING_INOUTSINE, 1, 0, function()
+		local id = rps.spawn_symbol(gesture.symbol, vmath.vector3(160, -200, 0), { collisions = false })
+		go.animate(id, "position", go.PLAYBACK_ONCE_PINGPONG, vmath.vector3(160, 200, 0), go.EASING_INOUTSINE, 1, 0, function()
 			go.delete(id)
 		end)
 		local closest = table.remove(symbols, 1)

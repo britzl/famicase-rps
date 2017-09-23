@@ -124,7 +124,7 @@ nodes {
 nodes {
   position {
     x: 320.0
-    y: 970.723
+    y: 914.626
     z: 0.0
     w: 1.0
   }
@@ -135,8 +135,8 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 4.0
-    y: 4.0
+    x: 5.0
+    y: 5.0
     z: 1.0
     w: 1.0
   }
@@ -154,7 +154,9 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "School of RPS"
+  text: "Academy\n"
+  "of\n"
+  "RPS"
   font: "dialog"
   id: "title"
   xanchor: XANCHOR_NONE

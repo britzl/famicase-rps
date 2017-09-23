@@ -1,7 +1,7 @@
 return {
 	tutorial = {
 		name = "The Trainer",
-		portrait = hash("arnie"),
+		portrait = hash("wazoo"),
 		interval = 6,
 		speed = 12,
 		health = 3,
@@ -11,7 +11,7 @@ return {
 	},
 	arnie = {
 		name = "The Governator",
-		portrait = hash("arnie"),
+		portrait = hash("wazoo"),
 		interval = 1.25,
 		speed = 6,
 		health = 8,

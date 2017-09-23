@@ -2,4 +2,5 @@ go.property("symbol_type", hash(""))
 
 function init(self)
 	msg.post("#sprite", "play_animation", { id = self.symbol_type })
+	go.set_scale(vmath.vector3(0.5, 0.5, 1))
 end

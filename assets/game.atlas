@@ -23,10 +23,28 @@ images {
   image: "/assets/images/panel_blue.png"
 }
 images {
-  image: "/assets/images/floor_posterize.png"
+  image: "/assets/images/heart.png"
 }
 images {
-  image: "/assets/images/heart.png"
+  image: "/assets/images/opponent.png"
+}
+images {
+  image: "/assets/images/player.png"
+}
+images {
+  image: "/assets/images/stars.png"
+}
+images {
+  image: "/assets/images/opponent_health.png"
+}
+images {
+  image: "/assets/images/player_health.png"
+}
+images {
+  image: "/assets/images/portraits/wazoo.png"
+}
+images {
+  image: "/assets/images/panel.png"
 }
 animations {
   id: "gesture"

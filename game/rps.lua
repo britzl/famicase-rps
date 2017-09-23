@@ -125,7 +125,7 @@ end
 
 function M.spawn_symbol(symbol, position)
 	print("spawn_symbol", symbol)
-	return factory.create("game:/game#symbolfactory", position or vmath.vector3(320, 1300, 0), nil, { symbol_type = symbol })
+	return factory.create("game:/game#symbolfactory", position or vmath.vector3(160, 650, 0), nil, { symbol_type = symbol })
 end
 
 return M
