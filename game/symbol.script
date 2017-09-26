@@ -1,10 +1,14 @@
 local signals = require "controller.signals"
 
 go.property("symbol_type", hash(""))
+go.property("hidden", false)
 
 function init(self)
-	msg.post("#sprite", "play_animation", { id = self.symbol_type })
-	go.set_scale(vmath.vector3(0.5, 0.5, 1))
+	if self.hidden then
+		msg.post("#sprite", "play_animation", { id = hash("hidden") })
+	else
+		msg.post("#sprite", "play_animation", { id = self.symbol_type })
+	end
 	signals.GAME_FINISHED.add()
 end
 

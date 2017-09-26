@@ -2,7 +2,7 @@ local M = {}
 
 M.ROCK = hash("rock")
 M.PAPER = hash("paper")
-M.SCISSORS = hash("scissor")
+M.SCISSORS = hash("scissors")
 
 M.DRAW = "draw"
 M.WIN = "win"
@@ -122,8 +122,10 @@ function M.char_to_symbol(char)
 end
 
 
-function M.spawn_symbol(symbol, position)
-	return factory.create("game:/game#symbolfactory", position or vmath.vector3(160, 650, 0), nil, { symbol_type = symbol })
+function M.spawn_symbol(symbol, position, properties)
+	properties = properties or {}
+	properties.symbol_type = symbol
+	return factory.create("game:/game#symbolfactory", position or vmath.vector3(160, 650, 0), nil, properties)
 end
 
 return M

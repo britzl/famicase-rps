@@ -1,3 +1,5 @@
+local rps = require "game.rps"
+
 local M = {}
 
 local function deepcopy(orig)
@@ -18,9 +20,7 @@ end
 
 M.TUTORIAL = { "tutorial" }
 
-M.QUICKBATTLE = { "borg", "threeeye", "grunt" }
-
-M.TOURNAMENT = {}
+M.BATTLE = { "borg", "threeeye", "grunt" }
 
 local opponents = {
 	tutorial = {
@@ -30,6 +30,7 @@ local opponents = {
 		speed = 12,
 		health = 3,
 		pattern = "RPS",
+		damage = { [rps.ROCK] = 1, [rps.PAPER] = 1, [rps.SCISSORS] = 1 },
 		emotes_won = { "Aww, that was close! Better luck next time. Come back if you want to practice some more." },
 		emotes_lost = { "Well done! Now you know everything there is to know about Rock, Paper and Scissors." },
 	},
@@ -37,10 +38,12 @@ local opponents = {
 		name = "Cy the Borg",
 		portrait = hash("borg"),
 		interval = 1.25,
-		speed = 2,
+		speed = 5,
 		health = 8,
 		pattern = "RPS",
-		powerups = { hash("meteorstorm") },
+		damage = { [rps.ROCK] = 1, [rps.PAPER] = 1, [rps.SCISSORS] = 1 },
+		powerups = { hash("meteorshower"), hash("papercut"), hash("cloakingdevice") },
+		emotes = { "" },
 		emotes_won = { "If it bleeds, we can kill it", "Take that you sack of meat!" },
 		emotes_lost = { "Syntax error!", "Does not compute!" },
 	},
@@ -48,10 +51,11 @@ local opponents = {
 		name = "Threeeye",
 		portrait = hash("threeeye"),
 		interval = 1.25,
-		speed = 2,
+		speed = 5,
 		health = 8,
 		pattern = "RPS",
-		powerups = { hash("meteorstorm") },
+		damage = { [rps.ROCK] = 1, [rps.PAPER] = 1, [rps.SCISSORS] = 1 },
+		powerups = { hash("meteorshower"), hash("papercut"), hash("cloakingdevice") },
 		emotes_won = { "Take that you filthy Terran!" },
 		emotes_lost = { "Curse you and your dirty socks!" },
 	},
@@ -59,10 +63,11 @@ local opponents = {
 		name = "Gorkan the Grunt",
 		portrait = hash("grunt"),
 		interval = 1.25,
-		speed = 2,
+		speed = 5,
 		health = 8,
 		pattern = "RPS",
-		powerups = { hash("meteorstorm") },
+		damage = { [rps.ROCK] = 1, [rps.PAPER] = 1, [rps.SCISSORS] = 1 },
+		powerups = { hash("meteorshower"), hash("papercut"), hash("cloakingdevice") },
 		emotes_powerup = { "" },
 		emotes_won = { "You hit like a vegetarian!" },
 		emotes_lost = { "Whaaaaargh! That hurt!" },

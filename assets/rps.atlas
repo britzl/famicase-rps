@@ -5,9 +5,6 @@ images {
   image: "/assets/images/rock.png"
 }
 images {
-  image: "/assets/images/scissor.png"
-}
-images {
   image: "/assets/images/transparent1px.png"
 }
 images {
@@ -60,6 +57,45 @@ images {
 }
 images {
   image: "/assets/images/powerups/meteorshower.png"
+}
+images {
+  image: "/assets/images/powerups/papercut.png"
+}
+images {
+  image: "/assets/images/powerups/cloakingdevice.png"
+}
+images {
+  image: "/assets/images/hidden.png"
+}
+images {
+  image: "/assets/images/logo.png"
+}
+images {
+  image: "/assets/images/soundoff.png"
+}
+images {
+  image: "/assets/images/soundon.png"
+}
+images {
+  image: "/assets/images/musicoff.png"
+}
+images {
+  image: "/assets/images/musicon.png"
+}
+images {
+  image: "/assets/images/scissors.png"
+}
+images {
+  image: "/assets/images/about.png"
+}
+images {
+  image: "/assets/images/defold_72.png"
+}
+images {
+  image: "/assets/images/defold_120.png"
+}
+images {
+  image: "/assets/images/github.png"
 }
 animations {
   id: "player_power"

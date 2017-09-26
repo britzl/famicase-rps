@@ -45,34 +45,39 @@ local function flash_sprite(sprite_url)
 	go.animate(sprite_url, "tint", go.PLAYBACK_ONCE_PINGPONG, vmath.vector4(4,4,4,1), go.EASING_OUTINQUAD, 0.4)
 end
 
-local function damage_opponent()
-	opponent.health = opponent.health - 1
+local function damage_opponent(symbol)
+	local amount = player.damage[symbol]
+	opponent.health = opponent.health - amount
 	update_opponent()
 	flash_sprite("/opponent_health#full")
 end
 
-local function damage_player()
-	player.health = player.health - 1
+local function damage_player(symbol)
+	local amount = opponent.damage[symbol]
+	player.health = player.health - amount
 	update_player()
 	flash_sprite("/player_health#full")
 end
 
 local function power_opponent()
-	opponent.power = opponent.power + 1
-	update_opponent()
-	flash_sprite("/opponent#power" .. opponent.power)
+	if opponent.power < 3 then
+		opponent.power = opponent.power + 1
+		update_opponent()
+		flash_sprite("/opponent#power" .. opponent.power)
+	end
 end
 
 local function power_player()
-	player.power = player.power + 1
-	update_player()	
-	flash_sprite("/player#power" .. player.power)
+	if player.power < 3 then
+		player.power = player.power + 1
+		update_player()	
+		flash_sprite("/player#power" .. player.power)
+	end
 end
 
 local function spawn_opponent_symbol(symbol)
-	local id = rps.spawn_symbol(symbol)
+	local id = rps.spawn_symbol(symbol, nil, { hidden = opponent.cloakingdevice })
 	table.insert(symbols, { id = id, symbol = symbol })
-	go.cancel_animations(id, "position.y")
 	go.animate(id, "position.y", go.PLAYBACK_ONCE_FORWARD, 50, go.EASING_LINEAR, opponent.speed, 0, function()
 		for i,s in pairs(symbols) do
 			if s.id == id then
@@ -81,24 +86,63 @@ local function spawn_opponent_symbol(symbol)
 			end
 		end
 		go.delete(id)
-		damage_player()
+		damage_player(symbol)
 		power_opponent()
 	end)
 end
 
-local function meteorstorm()
+local function show_opponent_powerup(id)
+	msg.post("opponent_powerup#sprite", "play_animation", { id = id })
+	go.cancel_animations("opponent_powerup", "position")
+	local pos = vmath.vector3(375, 420, 0)
+	go.animate("opponent_powerup", "position", go.PLAYBACK_ONCE_FORWARD, pos - vmath.vector3(100, 0, 0), go.EASING_OUTQUAD, 0.6)
+end
+
+local function hide_opponent_powerup()
+	local pos = vmath.vector3(375, 420, 0)
+	go.cancel_animations("opponent_powerup", "position")
+	go.animate("opponent_powerup", "position", go.PLAYBACK_ONCE_FORWARD, pos + vmath.vector3(100, 0, 0), go.EASING_INQUAD, 0.6)
+end
+
+local function meteorshower()
 	flow(function()
-		local pos = go.get_position("opponent_powerup")
-		go.animate("opponent_powerup", "position", go.PLAYBACK_ONCE_FORWARD, pos - vmath.vector3(200, 0, 0), go.EASING_OUTQUAD, 2)
+		show_opponent_powerup(hash("meteorshower"))
 		flow.delay(1)
-		go.animate("opponent_powerup", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_INQUAD, 2)
 		for i=1,3 do
-			local symbol = rps.char_to_symbol("?")
+			local symbol = rps.char_to_symbol("R")
 			spawn_opponent_symbol(symbol)
 			flow.delay(0.5)
 		end
+		hide_opponent_powerup()
 	end)
 end
+
+
+local function papercut()
+	flow.parallel(function()
+		show_opponent_powerup(hash("papercut"))
+		opponent.damage[rps.PAPER] = opponent.damage[rps.PAPER] + 1
+		flow.delay(10)
+		opponent.damage[rps.PAPER] = opponent.damage[rps.PAPER] - 1
+		hide_opponent_powerup()
+	end)
+end
+
+local function cloakingdevice()
+	flow.parallel(function()
+		show_opponent_powerup(hash("cloakingdevice"))
+		opponent.cloakingdevice = true
+		flow.delay(10)
+		opponent.cloakingdevice = false
+		hide_opponent_powerup()
+	end)
+end
+
+local POWERUPS = {
+	[hash("meteorshower")] = meteorshower,
+	[hash("papercut")] = papercut,
+	[hash("cloakingdevice")] = cloakingdevice,
+}
 
 local function check_opponent_powerup()
 	if opponent.power < 3 then
@@ -107,9 +151,10 @@ local function check_opponent_powerup()
 	opponent.power = 0
 	update_opponent(opponent)
 
-	local powerup = opponent.powerups[math.random(1, #opponent.powerups)]
-	if powerup == hash("meteorstorm") then
-		meteorstorm()
+	local powerup = POWERUPS[opponent.powerups[math.random(1, #opponent.powerups)]]
+	powerup = cloakingdevice()
+	if powerup then
+		powerup()
 	end
 	return true
 end
@@ -117,22 +162,28 @@ end
 local function normal_game(message)
 	symbols = {}
 	opponent = opponents.get(message.opponent)
-	player = { portrait = hash("player"), power = 0, health = message.player_health, max_health = message.player_health }
+	player = {
+		portrait = hash("player"),
+		power = 0,
+		health = message.player_health,
+		max_health = message.player_health,
+		damage = { [rps.ROCK] = 1, [rps.PAPER] = 1, [rps.SCISSORS] = 1 },
+	}
 	
 	update_opponent()
 	update_player()
 	
 	label.set_text("ready#label", "3")
-	msg.post("sounds#three", "play_sound")
+	msg.post("controller:/controller", "play_sfx", { id = "three" })
 	flow.delay(1)
 	label.set_text("ready#label", "2")
-	msg.post("sounds#two", "play_sound")
+	msg.post("controller:/controller", "play_sfx", { id = "two" })
 	flow.delay(1)
 	label.set_text("ready#label", "1")
-	msg.post("sounds#one", "play_sound")
+	msg.post("controller:/controller", "play_sfx", { id = "one" })
 	flow.delay(1)
 	label.set_text("ready#label", "Go!")
-	msg.post("sounds#go", "play_sound", { gain = 0.5 })
+	msg.post("controller:/controller", "play_sfx", { id = "go", gain = 0.5 })
 	flow.delay(1)
 	label.set_text("ready#label", "")
 
@@ -143,19 +194,20 @@ local function normal_game(message)
 		local triggered = check_opponent_powerup()
 		if not triggered then
 			local char = opponent.pattern:sub(pattern_index, pattern_index)
-			local symbol = rps.char_to_symbol(char)
-			spawn_opponent_symbol(symbol)
+			if char ~= " " then
+				local symbol = rps.char_to_symbol(char)
+				spawn_opponent_symbol(symbol)
+			end
 			pattern_index = pattern_index + 1
 			if pattern_index > #opponent.pattern then
 				pattern_index = 1
 			end
 		end
-		
-		flow.delay(opponent.interval)
-			
+					
 		if player.health <= 0 or opponent.health <= 0 then
 			break
 		end
+		flow.delay(opponent.interval)
 	end
 	
 	local dialog_text = ""
@@ -209,10 +261,10 @@ function on_input(self, action_id, action)
 		if closest then
 			local outcome = rps.evaluate(g.symbol, closest.symbol)
 			if outcome == rps.WIN then
-				damage_opponent()
+				damage_opponent(g.symbol)
 				power_player()
 			elseif outcome == rps.LOSS then
-				damage_player()
+				damage_player(g.symbol)
 				power_opponent()
 			end
 			go.delete(closest.id)

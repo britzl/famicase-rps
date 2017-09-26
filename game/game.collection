@@ -601,106 +601,6 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "sounds"
-  data: "embedded_components {\n"
-  "  id: \"go\"\n"
-  "  type: \"sound\"\n"
-  "  data: \"sound: \\\"/assets/sounds/go2.wav\\\"\\n"
-  "looping: 0\\n"
-  "group: \\\"master\\\"\\n"
-  "gain: 1.0\\n"
-  "\"\n"
-  "  position {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "    w: 1.0\n"
-  "  }\n"
-  "}\n"
-  "embedded_components {\n"
-  "  id: \"one\"\n"
-  "  type: \"sound\"\n"
-  "  data: \"sound: \\\"/assets/sounds/one.wav\\\"\\n"
-  "looping: 0\\n"
-  "group: \\\"master\\\"\\n"
-  "gain: 1.0\\n"
-  "\"\n"
-  "  position {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "    w: 1.0\n"
-  "  }\n"
-  "}\n"
-  "embedded_components {\n"
-  "  id: \"two\"\n"
-  "  type: \"sound\"\n"
-  "  data: \"sound: \\\"/assets/sounds/two.wav\\\"\\n"
-  "looping: 0\\n"
-  "group: \\\"master\\\"\\n"
-  "gain: 1.0\\n"
-  "\"\n"
-  "  position {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "    w: 1.0\n"
-  "  }\n"
-  "}\n"
-  "embedded_components {\n"
-  "  id: \"three\"\n"
-  "  type: \"sound\"\n"
-  "  data: \"sound: \\\"/assets/sounds/three.wav\\\"\\n"
-  "looping: 0\\n"
-  "group: \\\"master\\\"\\n"
-  "gain: 1.0\\n"
-  "\"\n"
-  "  position {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "    w: 1.0\n"
-  "  }\n"
-  "}\n"
-  ""
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
-}
-embedded_instances {
   id: "opponent_powerup"
   data: "embedded_components {\n"
   "  id: \"sprite\"\n"
@@ -724,8 +624,8 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: 377.379
-    y: 420.886
+    x: 375.0
+    y: 420.0
     z: 0.0
   }
   rotation {

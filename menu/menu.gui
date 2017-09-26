@@ -70,69 +70,6 @@ nodes {
 nodes {
   position {
     x: 320.0
-    y: 914.626
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 5.0
-    y: 5.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 160.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.3882353
-    y: 0.7019608
-    z: 0.7372549
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "Raiding Pirates in Space"
-  font: "dialog"
-  id: "title"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  shadow {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: true
-  parent: "root"
-  layer: "text"
-  inherit_alpha: true
-  alpha: 1.0
-  outline_alpha: 0.0
-  shadow_alpha: 1.0
-  template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.05
-}
-nodes {
-  position {
-    x: 320.0
     y: 600.0
     z: 0.0
     w: 1.0
@@ -291,7 +228,7 @@ nodes {
 nodes {
   position {
     x: 320.0
-    y: 482.516
+    y: 442.173
     z: 0.0
     w: 1.0
   }
@@ -320,7 +257,7 @@ nodes {
     w: 1.0
   }
   type: TYPE_TEMPLATE
-  id: "quickbattle"
+  id: "battle"
   parent: "root"
   layer: ""
   inherit_alpha: true
@@ -348,7 +285,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 590.0
+    x: 390.0
     y: 100.0
     z: 0.0
     w: 1.0
@@ -362,12 +299,12 @@ nodes {
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
   texture: "rps/button"
-  id: "quickbattle/bg"
+  id: "battle/bg"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "quickbattle"
+  parent: "battle"
   layer: "below"
   inherit_alpha: true
   slice9 {
@@ -417,9 +354,9 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "QUICK BATTLE"
+  text: "BATTLE"
   font: "ui"
-  id: "quickbattle/label"
+  id: "battle/label"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -437,7 +374,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "quickbattle/bg"
+  parent: "battle/bg"
   layer: "text"
   inherit_alpha: true
   alpha: 1.0
@@ -451,7 +388,7 @@ nodes {
 nodes {
   position {
     x: 320.0
-    y: 367.605
+    y: 900.0
     z: 0.0
     w: 1.0
   }
@@ -462,54 +399,14 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 1.0
-    y: 1.0
+    x: 2.0
+    y: 2.0
     z: 1.0
     w: 1.0
   }
   size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEMPLATE
-  id: "tournament"
-  parent: "root"
-  layer: ""
-  inherit_alpha: true
-  alpha: 1.0
-  template: "/ui/button.gui"
-  template_node_child: false
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 570.0
-    y: 100.0
+    x: 320.0
+    y: 116.0
     z: 0.0
     w: 1.0
   }
@@ -521,33 +418,32 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "rps/button"
-  id: "tournament/bg"
+  texture: "game/logo"
+  id: "logo"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  parent: "tournament"
+  parent: "root"
   layer: "below"
   inherit_alpha: true
   slice9 {
-    x: 12.0
-    y: 16.0
-    z: 12.0
-    w: 16.0
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
   }
   clipping_mode: CLIPPING_MODE_NONE
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 4
-  template_node_child: true
-  size_mode: SIZE_MODE_MANUAL
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: 0.0
-    y: 0.0
+    x: 40.0
+    y: 50.0
     z: 0.0
     w: 1.0
   }
@@ -558,55 +454,211 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 3.0
-    y: 3.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 20.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.3882353
-    y: 0.7019608
-    z: 0.7372549
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "TOURNAMENT"
-  font: "ui"
-  id: "tournament/label"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  shadow {
     x: 1.0
     y: 1.0
     z: 1.0
     w: 1.0
   }
+  size {
+    x: 48.0
+    y: 48.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: "game/musicon"
+  id: "music"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "tournament/bg"
-  layer: "text"
+  parent: "root"
+  layer: "below"
   inherit_alpha: true
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
   alpha: 1.0
-  outline_alpha: 0.0
-  shadow_alpha: 1.0
-  overridden_fields: 8
-  template_node_child: true
-  text_leading: 1.0
-  text_tracking: 0.05
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 100.0
+    y: 50.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: "game/soundon"
+  id: "sfx"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "root"
+  layer: "below"
+  inherit_alpha: true
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 1.0
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 593.915
+    y: 50.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: "game/about"
+  id: "about"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "root"
+  layer: "below"
+  inherit_alpha: true
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 1.0
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 535.0
+    y: 50.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 48.0
+    y: 48.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: "game/github"
+  id: "github"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "root"
+  layer: ""
+  inherit_alpha: true
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 1.0
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
 }
 layers {
   name: "below"
