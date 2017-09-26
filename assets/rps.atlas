@@ -89,13 +89,19 @@ images {
   image: "/assets/images/about.png"
 }
 images {
-  image: "/assets/images/defold_72.png"
-}
-images {
   image: "/assets/images/defold_120.png"
 }
 images {
   image: "/assets/images/github.png"
+}
+images {
+  image: "/assets/images/twoface.png"
+}
+images {
+  image: "/assets/images/alien.png"
+}
+images {
+  image: "/assets/images/mohawk.png"
 }
 animations {
   id: "player_power"

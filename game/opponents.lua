@@ -37,8 +37,8 @@ local opponents = {
 	borg = {
 		name = "Cy the Borg",
 		portrait = hash("borg"),
-		interval = 1.25,
-		speed = 5,
+		interval = 2.5,
+		speed = 8,
 		health = 8,
 		pattern = "RPS",
 		damage = { [rps.ROCK] = 1, [rps.PAPER] = 1, [rps.SCISSORS] = 1 },
@@ -50,8 +50,8 @@ local opponents = {
 	threeeye = {
 		name = "Threeeye",
 		portrait = hash("threeeye"),
-		interval = 1.25,
-		speed = 5,
+		interval = 2.5,
+		speed = 8,
 		health = 8,
 		pattern = "RPS",
 		damage = { [rps.ROCK] = 1, [rps.PAPER] = 1, [rps.SCISSORS] = 1 },
@@ -62,8 +62,8 @@ local opponents = {
 	grunt = {
 		name = "Gorkan the Grunt",
 		portrait = hash("grunt"),
-		interval = 1.25,
-		speed = 5,
+		interval = 2.5,
+		speed = 8,
 		health = 8,
 		pattern = "RPS",
 		damage = { [rps.ROCK] = 1, [rps.PAPER] = 1, [rps.SCISSORS] = 1 },
