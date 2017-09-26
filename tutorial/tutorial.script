@@ -12,10 +12,6 @@ local function show_dialog(portrait, text)
 	flow.until_message(monarch.FOCUS_GAINED)
 end
 
-local function hide_dialog()
-	monarch.back()
-end
-
 local function point_to_screen(p)
 	return vmath.vector3(35 + (p.x * 250), 284 + ((p.y - 0.5) * 250), 0)
 end
@@ -38,9 +34,6 @@ local function tutorial(self, message)
 	local game = { rounds = message.rounds }
 	local opponent = opponents[message.opponent]
 	local player = { portrait = hash("player") }
-	local health = { player = 6, opponent = 3 }
-	--update_opponent(opponent, health)
-	--update_player(player, health)
 
 	show_dialog(opponent.portrait, {
 		"Welcome to the Academy of Rock, Paper & Scissors!",
@@ -99,16 +92,14 @@ I'm going to throw some Rocks, Papers and Scissors your way.
 
 Let me know when you are ready.]] })
 
-	
 	monarch.show(hash("game"), nil, message)
 end
 
 
 function init(self)
 	self.gesture = gesture.create(rps.GESTURES)
-	local data = monarch.data(hash("tutorial"))
 	flow(function()
-		tutorial(self, data)
+		tutorial(self, monarch.data(hash("tutorial")))
 	end)
 end
 

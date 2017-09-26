@@ -40,6 +40,12 @@ images {
 images {
   image: "/assets/images/button.png"
 }
+images {
+  image: "/assets/images/belowhealthbar.png"
+}
+images {
+  image: "/assets/images/healthbar.png"
+}
 margin: 0
 extrude_borders: 2
 inner_padding: 0

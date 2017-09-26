@@ -8,14 +8,7 @@ local signals = require "controller.signals"
 local OPPONENTS = require "game.opponents"
 local GESTURE = signal.create("gesture")
 
-local function animate_symbol(id, duration, delay)
-	duration = duration or 6
-	delay = delay or 0
-	go.cancel_animations(id, "position.y")
-	go.animate(id, "position.y", go.PLAYBACK_ONCE_FORWARD, go.get_position(id).y - 2000, go.EASING_LINEAR, duration, delay, function()
-		go.delete(id)
-	end)
-end
+local HEALTHBAR_WIDTH = 176
 
 local function show_dialog(portrait, text)
 	monarch.show(hash("dialog"), nil, { text = text, portrait = portrait })
@@ -25,16 +18,14 @@ end
 local function update_opponent(opponent, health)
 	msg.post("opponent#portrait", "play_flipbook", { id = opponent.portrait })
 	label.set_text("opponent#text", opponent.name)
-	for i=1,10 do
-		msg.post("opponent#health" .. i, health.opponent >= i and "enable" or "disable")
-	end
+	local ratio = health.opponent.current / health.opponent.max
+	go.set_position(vmath.vector3(-HEALTHBAR_WIDTH + (HEALTHBAR_WIDTH * ratio), 0, 0), "opponent_health")
 end
 
 local function update_player(player, health)
 	msg.post("player#portrait", "play_flipbook", { id = player.portrait })
-	for i=1,10 do
-		msg.post("player#health" .. i, health.player >= i and "enable" or "disable")
-	end
+	local ratio = health.player.current / health.player.max
+	go.set_position(vmath.vector3(HEALTHBAR_WIDTH - (HEALTHBAR_WIDTH * ratio), 0, 0), "player_health")
 end
 
 local function normal_game(message)
@@ -43,7 +34,10 @@ local function normal_game(message)
 	local game = { rounds = message.rounds }
 	local opponent = OPPONENTS[message.opponent]
 	local player = { portrait = hash("player") }
-	local health = { player = message.player_health, opponent = message.opponent_health }
+	local health = {
+		player = { max = message.player_health, current = message.player_health },
+		opponent = { max = message.opponent_health, current = message.opponent_health }
+	}
 	local symbols = {}
 	update_opponent(opponent, health)
 	update_player(player, health)
@@ -57,10 +51,10 @@ local function normal_game(message)
 		if closest then
 			local outcome = rps.evaluate(gesture.symbol, closest.symbol)
 			if outcome == rps.WIN then
-				health.opponent = health.opponent - 1
+				health.opponent.current = health.opponent.current - 1
 				update_opponent(opponent, health)
 			elseif outcome == rps.LOSS then
-				health.player = health.player - 1
+				health.player.current = health.player.current - 1
 				update_player(player, health)
 			end
 			go.delete(closest.id)
@@ -86,7 +80,7 @@ local function normal_game(message)
 		go.cancel_animations(id, "position.y")
 		go.animate(id, "position.y", go.PLAYBACK_ONCE_FORWARD, -100, go.EASING_LINEAR, opponent.speed, 0, function()
 			go.delete(id)
-			health.player = health.player - 1
+			health.player.current = health.player.current - 1
 			update_player(player, health)
 		end)
 		
@@ -96,21 +90,20 @@ local function normal_game(message)
 		if pattern_index > #opponent.pattern then
 			pattern_index = 1
 		end
-		if health.player <= 0 or health.opponent <= 0 then
+		if health.player.current <= 0 or health.opponent.current <= 0 then
 			break
 		end
 	end
 	
 	local dialog_text = ""
-	if health.player == 0 then
+	if health.player.current == 0 then
 		dialog_text = opponent.emotes_won[math.random(1, #opponent.emotes_won)]
 	else
 		dialog_text = opponent.emotes_lost[math.random(1, #opponent.emotes_lost)]
 	end
+	signals.GAME_FINISHED.trigger({ health = health })
 	show_dialog(opponent.portrait, { dialog_text })
-	flow.delay(2)
-	
-	--signals.GAME_FINISHED.trigger({ health = health })
+	flow.delay(1)
 	monarch.show(hash("menu"), { clear = true })
 end
 
@@ -118,8 +111,7 @@ end
 function init(self)
 	self.gesture = gesture.create(rps.GESTURES)
 	flow(function()
-		local data = monarch.data(hash("game"))
-		normal_game(data)
+		normal_game(monarch.data(hash("game")))
 	end)
 end
 

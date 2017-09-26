@@ -1,6 +1,19 @@
+local signals = require "controller.signals"
+
 go.property("symbol_type", hash(""))
 
 function init(self)
 	msg.post("#sprite", "play_animation", { id = self.symbol_type })
 	go.set_scale(vmath.vector3(0.5, 0.5, 1))
+	signals.GAME_FINISHED.add()
+end
+
+function final(self)
+	signals.GAME_FINISHED.remove()
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == signals.GAME_FINISHED.id then
+		go.delete()
+	end
 end

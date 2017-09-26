@@ -1,6 +1,6 @@
 [project]
 title = RPS
-dependencies = https://github.com/britzl/ludobits/archive/1.3.3.zip, https://github.com/britzl/defold-orthographic/archive/1.2.2.zip, https://github.com/britzl/monarch/archive/master.zip, https://github.com/britzl/gooey/archive/master.zip
+dependencies = https://github.com/britzl/ludobits/archive/1.3.4.zip, https://github.com/britzl/defold-orthographic/archive/1.2.2.zip, https://github.com/britzl/monarch/archive/master.zip, https://github.com/britzl/gooey/archive/master.zip
 
 [bootstrap]
 main_collection = /controller/controller.collectionc
