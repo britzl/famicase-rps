@@ -12,6 +12,7 @@ game_binding = /input/game.input_bindingc
 [display]
 width = 640
 height = 1136
+variable_dt = 1
 
 [script]
 shared_state = 1
@@ -52,6 +53,7 @@ app_icon_192x192 = /assets/appicons/icon_192.png
 [physics]
 debug = 0
 gravity_y = -20.0
+world_count = 10
 
 [graphics]
 default_texture_min_filter = nearest

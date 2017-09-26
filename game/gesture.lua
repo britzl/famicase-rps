@@ -36,7 +36,6 @@ function M.create(gestures)
 		local dy = max_y - min_y
 		local dmax = math.max(dx, dy)
 		if dmax == 0 then
-			print("dmax 0")
 			return
 		end
 		max_x = max_x + (dmax - dx) / 2

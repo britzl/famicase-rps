@@ -1,0 +1,45 @@
+images {
+  image: "/assets/images/paper.png"
+}
+images {
+  image: "/assets/images/rock.png"
+}
+images {
+  image: "/assets/images/scissor.png"
+}
+images {
+  image: "/assets/images/transparent1px.png"
+}
+images {
+  image: "/assets/images/heart.png"
+}
+images {
+  image: "/assets/images/opponent.png"
+}
+images {
+  image: "/assets/images/player.png"
+}
+images {
+  image: "/assets/images/portraits/wazoo.png"
+}
+images {
+  image: "/assets/images/panel.png"
+}
+images {
+  image: "/assets/images/health.png"
+}
+images {
+  image: "/assets/images/star1.png"
+}
+images {
+  image: "/assets/images/star2.png"
+}
+images {
+  image: "/assets/images/star3.png"
+}
+images {
+  image: "/assets/images/button.png"
+}
+margin: 0
+extrude_borders: 2
+inner_padding: 0

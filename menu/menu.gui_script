@@ -1,38 +1,89 @@
-local gooey = require "gooey.gooey"
+local rpstheme = require "ui.rpstheme"
 local monarch = require "monarch.monarch"
+local flow = require "ludobits.m.flow"
+local signals = require "controller.signals"
+local transitions = require "monarch.transitions.gui"
 
-function init(self)
-	gooey.acquire_input()
+
+local show_menu
+show_menu = function()
+	signals.GAME_FINISHED.remove(show_menu)
+	monarch.show(hash("menu"))
 end
 
-function final(self)
-	-- Add finalization code here
-	-- Remove this function if not needed
+
+function init(self)
+	rpstheme.acquire_input()
+	self.logo = gui.get_node("title")
+	self.training_button = gui.get_node("training/bg")
+	self.quickbattle_button = gui.get_node("quickbattle/bg")
+	self.tournament_button = gui.get_node("tournament/bg")
+	self.logo_pos = gui.get_position(self.logo)
+	self.training_pos = gui.get_position(self.training_button)
+	self.quickbattle_pos = gui.get_position(self.quickbattle_button)
+	self.tournament_pos = gui.get_position(self.tournament_button)
+	
+	
+--[[	local duration = 0.8
+	self.training_transition = transitions.create(self.training_button)
+		.show_in(transitions.slide_in_bottom, gui.EASING_OUTQUAD, duration, 0)
+		.show_out(transitions.slide_out_bottom, gui.EASING_INQUAD, duration, 0)
+	
+	self.quickbattle_transition = transitions.create(self.quickbattle_button)
+		.show_in(transitions.slide_in_bottom, gui.EASING_OUTQUAD, duration, 0)
+		.show_out(transitions.slide_out_bottom, gui.EASING_INQUAD, duration, 0)
+	
+	self.logo_transitions = transitions.create(self.logo)
+		.show_in(transitions.slide_in_top, gui.EASING_OUTQUAD, duration, 0)
+		.show_out(transitions.slide_out_top, gui.EASING_INQUAD, duration, 0)]]
+
 end
 
 function update(self, dt)
-	-- Add update code here
-	-- Remove this function if not needed
+	flow.update(dt)
 end
 
 function on_message(self, message_id, message, sender)
-	print("menu", message_id)
-	-- Add message-handling code here
-	-- Remove this function if not needed
+	--[[flow(function()
+		self.logo_transitions.handle(message_id, message, sender)
+		self.training_transition.handle(message_id, message, sender)
+		self.quickbattle_transition.handle(message_id, message, sender)
+	end)--]]
+	flow.on_message(message_id, message, sender)
+	if message_id == hash("transition_show_in") then
+		gui.set_position(self.logo, self.logo_pos + vmath.vector3(0, 1000, 0))
+		gui.set_position(self.training_button, self.training_pos - vmath.vector3(0, 1000, 0))
+		gui.set_position(self.quickbattle_button, self.quickbattle_pos - vmath.vector3(0, 1000, 0))
+		gui.set_position(self.tournament_button, self.tournament_pos - vmath.vector3(0, 1000, 0))
+		local duration = 0.8
+		gui.animate(self.logo, gui.PROP_POSITION, self.logo_pos, gui.EASING_OUTQUAD, duration)
+		gui.animate(self.training_button, gui.PROP_POSITION, self.training_pos, gui.EASING_OUTQUAD, duration)
+		gui.animate(self.quickbattle_button, gui.PROP_POSITION, self.quickbattle_pos, gui.EASING_OUTQUAD, duration, 0.15)
+		gui.animate(self.tournament_button, gui.PROP_POSITION, self.tournament_pos, gui.EASING_OUTQUAD, duration, 0.3, function()
+			msg.post(sender, "transition_done")
+		end)
+	elseif message_id == hash("transition_show_out") then
+		gui.set_position(self.logo, self.logo_pos)
+		gui.set_position(self.training_button, self.training_pos)
+		gui.set_position(self.quickbattle_button, self.quickbattle_pos)
+		gui.set_position(self.tournament_button, self.tournament_pos)
+		local duration = 0.8
+		gui.animate(self.logo, gui.PROP_POSITION, self.logo_pos + vmath.vector3(0, 1000, 0), gui.EASING_INQUAD, duration)
+		gui.animate(self.training_button, gui.PROP_POSITION, self.training_pos - vmath.vector3(0, 1000, 0), gui.EASING_INQUAD, duration, 0.1)
+		gui.animate(self.quickbattle_button, gui.PROP_POSITION, self.quickbattle_pos - vmath.vector3(0, 1000, 0), gui.EASING_INQUAD, duration, 0.05)
+		gui.animate(self.tournament_button, gui.PROP_POSITION, self.tournament_pos - vmath.vector3(0, 1000, 0), gui.EASING_INQUAD, duration, 0.0, function()
+			msg.post(sender, "transition_done")
+		end)
+	end
 end
 
 function on_input(self, action_id, action)
-	gooey.button("training", action_id, action, function()
-		print("training")
-		monarch.show(hash("game"), nil, function()
-			msg.post("game:/game#tutorial", "start", { opponent = "tutorial", opponent_health = 3, player_health = 6 })
-		end)
+	rpstheme.button("training", action_id, action, function()
+		monarch.show(hash("tutorial"), nil, { opponent = "tutorial", opponent_health = 3, player_health = 6 })
 	end)
-	gooey.button("quickbattle", action_id, action, function()
-		print("quickbattle")
-		monarch.show(hash("game"), nil, function()
-			msg.post("game:/game#normal", "start", { opponent = "arnie", opponent_health = 3, player_health = 6 })
-		end)
+	rpstheme.button("quickbattle", action_id, action, function()
+		signals.GAME_FINISHED.add(show_menu)
+		monarch.show(hash("game"), nil, { opponent = "arnie", opponent_health = 3, player_health = 6 }, play_quickbattle)
 	end)
 end
 

@@ -1,0 +1,37 @@
+local monarch = require "monarch.monarch"
+local transitions = require "monarch.transitions.gui"
+
+local function update_dialog(self)
+	gui.set_text(gui.get_node("text"), self.data.text[self.text_index])
+	gui.play_flipbook(gui.get_node("portrait"), self.data.portrait)
+end
+
+function init(self)
+	gui.set_render_order(15)
+	self.transitions = transitions.create(gui.get_node("bg"))
+		.show_in(transitions.slide_in_left, gui.EASING_OUTCUBIC, 0.8, 0)
+		.back_out(transitions.slide_out_left, gui.EASING_INCUBIC, 0.8, 0)
+		
+	self.data = monarch.data(hash("dialog"))
+	self.text_index = 1
+	
+	update_dialog(self)
+	msg.post(".", "acquire_input_focus")
+end
+	
+
+function on_input(self, action_id, action)
+	if action_id == hash("touch") and action.released then
+		self.text_index = self.text_index + 1
+		if self.text_index <= #self.data.text then
+			update_dialog(self)
+		else
+			monarch.back()
+		end
+	end
+end	
+	
+
+function on_message(self, message_id, message, sender)
+	self.transitions.handle(message_id, message, sender)
+end

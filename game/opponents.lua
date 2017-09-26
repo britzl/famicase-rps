@@ -6,8 +6,8 @@ return {
 		speed = 12,
 		health = 3,
 		pattern = "RPS",
-		emotes_won = { "Ah, better luck next time!" },
-		emotes_lost = { "Well done! You show great potential!" },
+		emotes_won = { "Aww, that was close! Better luck next time. Come back if you want to practice some more." },
+		emotes_lost = { "Well done! Now you know everything there is to know about Rock, Paper and Scissors." },
 	},
 	arnie = {
 		name = "The Governator",

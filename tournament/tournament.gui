@@ -1,11 +1,11 @@
 script: ""
 fonts {
   name: "dialog"
-  font: "/assets/fonts/dialog.font"
+  font: "/assets/fonts/ui.font"
 }
 textures {
   name: "game"
-  texture: "/assets/game.atlas"
+  texture: "/assets/rps.atlas"
 }
 background_color {
   x: 0.0

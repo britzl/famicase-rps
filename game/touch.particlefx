@@ -14,8 +14,8 @@ emitters {
     z: 0.0
     w: 1.0
   }
-  tile_source: "/assets/game.atlas"
-  animation: "gesture"
+  tile_source: "/assets/rps.atlas"
+  animation: "star3"
   material: "/builtins/materials/particlefx.material"
   blend_mode: BLEND_MODE_ADD
   particle_orientation: PARTICLE_ORIENTATION_DEFAULT
@@ -87,7 +87,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_SIZE
     points {
       x: 0.0
-      y: 40.0
+      y: 20.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -141,7 +141,7 @@ emitters {
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 0.0
+    spread: 45.0
   }
   particle_properties {
     key: PARTICLE_KEY_SCALE
@@ -210,9 +210,15 @@ emitters {
     key: PARTICLE_KEY_ROTATION
     points {
       x: 0.0
-      y: 0.0
-      t_x: 1.0
-      t_y: 0.0
+      y: 4.146432
+      t_x: 0.010983827
+      t_y: 0.9999397
+    }
+    points {
+      x: 1.0
+      y: 4.146432
+      t_x: 0.009763594
+      t_y: -0.9999523
     }
   }
   size_mode: SIZE_MODE_MANUAL
