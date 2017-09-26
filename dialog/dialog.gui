@@ -87,7 +87,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 64.0
+    x: 80.0
     y: 77.0
     z: 0.0
     w: 1.0
@@ -100,7 +100,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "game/wazoo"
+  texture: "game/grunt"
   id: "portrait"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE

@@ -14,13 +14,10 @@ images {
   image: "/assets/images/heart.png"
 }
 images {
-  image: "/assets/images/opponent.png"
+  image: "/assets/images/opponent_panel.png"
 }
 images {
-  image: "/assets/images/player.png"
-}
-images {
-  image: "/assets/images/portraits/wazoo.png"
+  image: "/assets/images/player_panel.png"
 }
 images {
   image: "/assets/images/panel.png"
@@ -45,6 +42,18 @@ images {
 }
 images {
   image: "/assets/images/healthbar.png"
+}
+images {
+  image: "/assets/images/portraits/borg.png"
+}
+images {
+  image: "/assets/images/portraits/grunt.png"
+}
+images {
+  image: "/assets/images/portraits/player.png"
+}
+images {
+  image: "/assets/images/portraits/threeeye.png"
 }
 margin: 0
 extrude_borders: 2

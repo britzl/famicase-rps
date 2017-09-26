@@ -5,7 +5,7 @@ local rps = require "game.rps"
 local signal = require "ludobits.m.signal"
 local signals = require "controller.signals"
 
-local OPPONENTS = require "game.opponents"
+local opponents = require "game.opponents"
 local GESTURE = signal.create("gesture")
 
 local HEALTHBAR_WIDTH = 176
@@ -16,14 +16,13 @@ local function show_dialog(portrait, text)
 end
 
 local function update_opponent(opponent, health)
-	msg.post("opponent#portrait", "play_flipbook", { id = opponent.portrait })
+	msg.post("/opponent#portrait", "play_animation", { id = opponent.portrait })
 	label.set_text("opponent#text", opponent.name)
 	local ratio = health.opponent.current / health.opponent.max
 	go.set_position(vmath.vector3(-HEALTHBAR_WIDTH + (HEALTHBAR_WIDTH * ratio), 0, 0), "opponent_health")
 end
 
 local function update_player(player, health)
-	msg.post("player#portrait", "play_flipbook", { id = player.portrait })
 	local ratio = health.player.current / health.player.max
 	go.set_position(vmath.vector3(HEALTHBAR_WIDTH - (HEALTHBAR_WIDTH * ratio), 0, 0), "player_health")
 end
@@ -32,11 +31,11 @@ local function normal_game(message)
 	msg.post(".", "acquire_input_focus")
 
 	local game = { rounds = message.rounds }
-	local opponent = OPPONENTS[message.opponent]
+	local opponent = opponents.ALL[message.opponent]
 	local player = { portrait = hash("player") }
 	local health = {
 		player = { max = message.player_health, current = message.player_health },
-		opponent = { max = message.opponent_health, current = message.opponent_health }
+		opponent = { max = opponent.health, current = opponent.health }
 	}
 	local symbols = {}
 	update_opponent(opponent, health)

@@ -3,4 +3,5 @@ local monarch = require "monarch.monarch"
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	monarch.show(hash("menu"))
+	math.randomseed(os.time())
 end
