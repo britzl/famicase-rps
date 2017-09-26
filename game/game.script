@@ -152,7 +152,6 @@ local function check_opponent_powerup()
 	update_opponent(opponent)
 
 	local powerup = POWERUPS[opponent.powerups[math.random(1, #opponent.powerups)]]
-	powerup = cloakingdevice()
 	if powerup then
 		powerup()
 	end
