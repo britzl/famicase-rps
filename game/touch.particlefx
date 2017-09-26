@@ -1,7 +1,7 @@
 emitters {
   id: "emitter"
   mode: PLAY_MODE_LOOP
-  duration: 2.0
+  duration: 1.0
   space: EMISSION_SPACE_WORLD
   position {
     x: 0.0
@@ -20,14 +20,14 @@ emitters {
   blend_mode: BLEND_MODE_ADD
   particle_orientation: PARTICLE_ORIENTATION_DEFAULT
   inherit_velocity: 0.0
-  max_particle_count: 400
-  type: EMITTER_TYPE_SPHERE
+  max_particle_count: 200
+  type: EMITTER_TYPE_CIRCLE
   start_delay: 0.0
   properties {
     key: EMITTER_KEY_SPAWN_RATE
     points {
       x: 0.0
-      y: 200.0
+      y: 100.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -37,7 +37,7 @@ emitters {
     key: EMITTER_KEY_SIZE_X
     points {
       x: 0.0
-      y: 4.0
+      y: 8.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -47,7 +47,7 @@ emitters {
     key: EMITTER_KEY_SIZE_Y
     points {
       x: 0.0
-      y: 4.0
+      y: 8.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -67,7 +67,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_LIFE_TIME
     points {
       x: 0.0
-      y: 2.0
+      y: 1.5
       t_x: 1.0
       t_y: 0.0
     }
@@ -77,7 +77,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_SPEED
     points {
       x: 0.0
-      y: 5.0
+      y: 0.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -87,7 +87,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_SIZE
     points {
       x: 0.0
-      y: 20.0
+      y: 2.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -147,9 +147,27 @@ emitters {
     key: PARTICLE_KEY_SCALE
     points {
       x: 0.0
-      y: 1.0
+      y: 1.2337384
       t_x: 1.0
       t_y: 0.0
+    }
+    points {
+      x: 0.15358491
+      y: 6.502953
+      t_x: 0.13523318
+      t_y: 0.9908138
+    }
+    points {
+      x: 0.6939623
+      y: 6.448499
+      t_x: 0.7239741
+      t_y: 0.68982714
+    }
+    points {
+      x: 1.0
+      y: 1.2337384
+      t_x: 0.028251331
+      t_y: -0.9996008
     }
   }
   particle_properties {
@@ -210,15 +228,15 @@ emitters {
     key: PARTICLE_KEY_ROTATION
     points {
       x: 0.0
-      y: 4.146432
-      t_x: 0.010983827
-      t_y: 0.9999397
+      y: 5.761124
+      t_x: 0.08837566
+      t_y: 0.9960872
     }
     points {
       x: 1.0
-      y: 4.146432
-      t_x: 0.009763594
-      t_y: -0.9999523
+      y: 5.761124
+      t_x: 0.0018173615
+      t_y: -0.99999833
     }
   }
   size_mode: SIZE_MODE_MANUAL

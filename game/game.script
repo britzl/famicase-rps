@@ -1,4 +1,5 @@
 local flow = require "ludobits.m.flow"
+local camera = require "orthographic.camera"
 local gesture = require "game.gesture"
 local monarch = require "monarch.monarch"
 local rps = require "game.rps"
@@ -6,96 +7,159 @@ local signal = require "ludobits.m.signal"
 local signals = require "controller.signals"
 
 local opponents = require "game.opponents"
-local GESTURE = signal.create("gesture")
 
 local HEALTHBAR_WIDTH = 176
+
+
+local opponent
+local player
+local symbols
+
 
 local function show_dialog(portrait, text)
 	monarch.show(hash("dialog"), nil, { text = text, portrait = portrait })
 	flow.until_message(monarch.FOCUS_GAINED)
 end
 
-local function update_opponent(opponent, health)
+local function update_opponent()
 	msg.post("/opponent#portrait", "play_animation", { id = opponent.portrait })
 	label.set_text("opponent#text", opponent.name)
-	local ratio = health.opponent.current / health.opponent.max
+	local ratio = opponent.health / opponent.max_health
 	go.set_position(vmath.vector3(-HEALTHBAR_WIDTH + (HEALTHBAR_WIDTH * ratio), 0, 0), "opponent_health")
+	for i=1,3 do
+		msg.post("opponent#power" .. i, opponent.power >= i and "enable" or "disable")
+	end
 end
 
-local function update_player(player, health)
-	local ratio = health.player.current / health.player.max
+local function update_player()
+	local ratio = player.health / player.max_health
 	go.set_position(vmath.vector3(HEALTHBAR_WIDTH - (HEALTHBAR_WIDTH * ratio), 0, 0), "player_health")
+	for i=1,3 do
+		msg.post("player#power" .. i, player.power >= i and "enable" or "disable")
+	end
+end
+
+local function flash_sprite(sprite_url)
+	go.cancel_animations(sprite_url, "tint")
+	go.set(sprite_url, "tint", vmath.vector4(1))
+	go.animate(sprite_url, "tint", go.PLAYBACK_ONCE_PINGPONG, vmath.vector4(4,4,4,1), go.EASING_OUTINQUAD, 0.4)
+end
+
+local function damage_opponent()
+	opponent.health = opponent.health - 1
+	update_opponent()
+	flash_sprite("/opponent_health#full")
+end
+
+local function damage_player()
+	player.health = player.health - 1
+	update_player()
+	flash_sprite("/player_health#full")
+end
+
+local function power_opponent()
+	opponent.power = opponent.power + 1
+	update_opponent()
+	flash_sprite("/opponent#power" .. opponent.power)
+end
+
+local function power_player()
+	player.power = player.power + 1
+	update_player()	
+	flash_sprite("/player#power" .. player.power)
+end
+
+local function spawn_opponent_symbol(symbol)
+	local id = rps.spawn_symbol(symbol)
+	table.insert(symbols, { id = id, symbol = symbol })
+	go.cancel_animations(id, "position.y")
+	go.animate(id, "position.y", go.PLAYBACK_ONCE_FORWARD, 50, go.EASING_LINEAR, opponent.speed, 0, function()
+		for i,s in pairs(symbols) do
+			if s.id == id then
+				table.remove(symbols, i)
+				break
+			end
+		end
+		go.delete(id)
+		damage_player()
+		power_opponent()
+	end)
+end
+
+local function meteorstorm()
+	flow(function()
+		local pos = go.get_position("opponent_powerup")
+		go.animate("opponent_powerup", "position", go.PLAYBACK_ONCE_FORWARD, pos - vmath.vector3(200, 0, 0), go.EASING_OUTQUAD, 2)
+		flow.delay(1)
+		go.animate("opponent_powerup", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_INQUAD, 2)
+		for i=1,3 do
+			local symbol = rps.char_to_symbol("?")
+			spawn_opponent_symbol(symbol)
+			flow.delay(0.5)
+		end
+	end)
+end
+
+local function check_opponent_powerup()
+	if opponent.power < 3 then
+		return false
+	end
+	opponent.power = 0
+	update_opponent(opponent)
+
+	local powerup = opponent.powerups[math.random(1, #opponent.powerups)]
+	if powerup == hash("meteorstorm") then
+		meteorstorm()
+	end
+	return true
 end
 
 local function normal_game(message)
-	msg.post(".", "acquire_input_focus")
-
-	local game = { rounds = message.rounds }
-	local opponent = opponents.ALL[message.opponent]
-	local player = { portrait = hash("player") }
-	local health = {
-		player = { max = message.player_health, current = message.player_health },
-		opponent = { max = opponent.health, current = opponent.health }
-	}
-	local symbols = {}
-	update_opponent(opponent, health)
-	update_player(player, health)
+	symbols = {}
+	opponent = opponents.get(message.opponent)
+	player = { portrait = hash("player"), power = 0, health = message.player_health, max_health = message.player_health }
 	
-	GESTURE.add(function(gesture)
-		local id = rps.spawn_symbol(gesture.symbol, vmath.vector3(160, -200, 0), { collisions = false })
-		go.animate(id, "position", go.PLAYBACK_ONCE_PINGPONG, vmath.vector3(160, 200, 0), go.EASING_INOUTSINE, 1, 0, function()
-			go.delete(id)
-		end)
-		local closest = table.remove(symbols, 1)
-		if closest then
-			local outcome = rps.evaluate(gesture.symbol, closest.symbol)
-			if outcome == rps.WIN then
-				health.opponent.current = health.opponent.current - 1
-				update_opponent(opponent, health)
-			elseif outcome == rps.LOSS then
-				health.player.current = health.player.current - 1
-				update_player(player, health)
-			end
-			go.delete(closest.id)
-		end
-	end)
+	update_opponent()
+	update_player()
 	
-	label.set_text("ready#label", "Ready?")
-	flow.delay(1)
 	label.set_text("ready#label", "3")
+	msg.post("sounds#three", "play_sound")
 	flow.delay(1)
 	label.set_text("ready#label", "2")
+	msg.post("sounds#two", "play_sound")
 	flow.delay(1)
 	label.set_text("ready#label", "1")
+	msg.post("sounds#one", "play_sound")
+	flow.delay(1)
+	label.set_text("ready#label", "Go!")
+	msg.post("sounds#go", "play_sound", { gain = 0.5 })
 	flow.delay(1)
 	label.set_text("ready#label", "")
 
+	msg.post(".", "acquire_input_focus")
+
 	local pattern_index = 1
 	while true do
-		local char = opponent.pattern:sub(pattern_index, pattern_index)
-		local symbol = rps.char_to_symbol(char)
-		local id = rps.spawn_symbol(symbol)
-		table.insert(symbols, { id = id, symbol = symbol })
-		go.cancel_animations(id, "position.y")
-		go.animate(id, "position.y", go.PLAYBACK_ONCE_FORWARD, -100, go.EASING_LINEAR, opponent.speed, 0, function()
-			go.delete(id)
-			health.player.current = health.player.current - 1
-			update_player(player, health)
-		end)
+		local triggered = check_opponent_powerup()
+		if not triggered then
+			local char = opponent.pattern:sub(pattern_index, pattern_index)
+			local symbol = rps.char_to_symbol(char)
+			spawn_opponent_symbol(symbol)
+			pattern_index = pattern_index + 1
+			if pattern_index > #opponent.pattern then
+				pattern_index = 1
+			end
+		end
 		
 		flow.delay(opponent.interval)
-		
-		pattern_index = pattern_index + 1
-		if pattern_index > #opponent.pattern then
-			pattern_index = 1
-		end
-		if health.player.current <= 0 or health.opponent.current <= 0 then
+			
+		if player.health <= 0 or opponent.health <= 0 then
 			break
 		end
 	end
 	
 	local dialog_text = ""
-	if health.player.current == 0 then
+	if player.health == 0 then
 		dialog_text = opponent.emotes_won[math.random(1, #opponent.emotes_won)]
 	else
 		dialog_text = opponent.emotes_lost[math.random(1, #opponent.emotes_lost)]
@@ -125,8 +189,33 @@ end
 
 function on_input(self, action_id, action)
 	flow.on_input(action_id, action)
+	if action_id == hash("touch") then
+		local world = camera.screen_to_world(hash("/camera"), vmath.vector3(action.x, action.y, 0))
+		go.set_position(world, "touch")
+		if action.pressed then
+			particlefx.play("touch#particlefx")
+		elseif action.released then
+			particlefx.stop("touch#particlefx")
+		end
+	end
+
 	local g = self.gesture.on_input(action_id, action)
 	if g then
-		GESTURE.trigger(g)
+		local id = rps.spawn_symbol(g.symbol, vmath.vector3(160, -200, 0), { collisions = false })
+		go.animate(id, "position", go.PLAYBACK_ONCE_PINGPONG, vmath.vector3(160, 200, 0), go.EASING_INOUTSINE, 1, 0, function()
+			go.delete(id)
+		end)
+		local closest = table.remove(symbols, 1)
+		if closest then
+			local outcome = rps.evaluate(g.symbol, closest.symbol)
+			if outcome == rps.WIN then
+				damage_opponent()
+				power_player()
+			elseif outcome == rps.LOSS then
+				damage_player()
+				power_opponent()
+			end
+			go.delete(closest.id)
+		end
 	end
 end

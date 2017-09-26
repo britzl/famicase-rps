@@ -31,8 +31,7 @@ end
 local function tutorial(self, message)
 	msg.post(".", "acquire_input_focus")
 
-	local game = { rounds = message.rounds }
-	local opponent = opponents.ALL[message.opponent]
+	local opponent = opponents.get(message.opponent)
 
 	show_dialog(opponent.portrait, {
 		"Welcome to the Academy of Rock, Paper & Scissors!",

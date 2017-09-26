@@ -16,6 +16,16 @@ instances {
   component_properties {
     id: "script"
     properties {
+      id: "near_z"
+      value: "-10.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "far_z"
+      value: "10.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
       id: "projection"
       value: "FIXED_ZOOM_2"
       type: PROPERTY_TYPE_HASH

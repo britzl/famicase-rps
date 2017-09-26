@@ -142,7 +142,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 350.0
+    x: 480.0
     y: 100.0
     z: 0.0
     w: 1.0
@@ -155,7 +155,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "<text>"
+  text: "A very long text that should wrap at some point"
   font: "dialog"
   id: "text"
   xanchor: XANCHOR_NONE

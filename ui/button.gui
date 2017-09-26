@@ -121,7 +121,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
   parent: "bg"
-  layer: ""
+  layer: "text"
   inherit_alpha: true
   alpha: 1.0
   outline_alpha: 0.0

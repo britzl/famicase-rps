@@ -1,15 +1,31 @@
 local M = {}
 
+local function deepcopy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[deepcopy(orig_key)] = deepcopy(orig_value)
+        end
+        setmetatable(copy, deepcopy(getmetatable(orig)))
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
+end
+
+
 M.TUTORIAL = { "tutorial" }
 
 M.QUICKBATTLE = { "borg", "threeeye", "grunt" }
 
 M.TOURNAMENT = {}
 
-M.ALL = {
+local opponents = {
 	tutorial = {
 		name = "The Trainer",
-		portrait = hash("wazoo"),
+		portrait = hash("borg"),
 		interval = 6,
 		speed = 12,
 		health = 3,
@@ -21,9 +37,10 @@ M.ALL = {
 		name = "Cy the Borg",
 		portrait = hash("borg"),
 		interval = 1.25,
-		speed = 6,
+		speed = 2,
 		health = 8,
 		pattern = "RPS",
+		powerups = { hash("meteorstorm") },
 		emotes_won = { "If it bleeds, we can kill it", "Take that you sack of meat!" },
 		emotes_lost = { "Syntax error!", "Does not compute!" },
 	},
@@ -31,9 +48,10 @@ M.ALL = {
 		name = "Threeeye",
 		portrait = hash("threeeye"),
 		interval = 1.25,
-		speed = 6,
+		speed = 2,
 		health = 8,
 		pattern = "RPS",
+		powerups = { hash("meteorstorm") },
 		emotes_won = { "Take that you filthy Terran!" },
 		emotes_lost = { "Curse you and your dirty socks!" },
 	},
@@ -41,13 +59,22 @@ M.ALL = {
 		name = "Gorkan the Grunt",
 		portrait = hash("grunt"),
 		interval = 1.25,
-		speed = 6,
+		speed = 2,
 		health = 8,
 		pattern = "RPS",
+		powerups = { hash("meteorstorm") },
+		emotes_powerup = { "" },
 		emotes_won = { "You hit like a vegetarian!" },
 		emotes_lost = { "Whaaaaargh! That hurt!" },
 	},
 }
 
+
+function M.get(id)
+	local o = deepcopy(opponents[id])
+	o.max_health = o.health
+	o.power = 0
+	return o
+end
 
 return M

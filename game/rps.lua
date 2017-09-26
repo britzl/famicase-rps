@@ -93,7 +93,6 @@ function M.get(symbol)
 end
 
 function M.evaluate(a, b)
-	print(a, b)
 	if a == b then
 		return M.DRAW
 	end
@@ -124,7 +123,6 @@ end
 
 
 function M.spawn_symbol(symbol, position)
-	print("spawn_symbol", symbol)
 	return factory.create("game:/game#symbolfactory", position or vmath.vector3(160, 650, 0), nil, { symbol_type = symbol })
 end
 

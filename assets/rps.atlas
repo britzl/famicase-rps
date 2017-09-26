@@ -55,6 +55,22 @@ images {
 images {
   image: "/assets/images/portraits/threeeye.png"
 }
+images {
+  image: "/assets/images/power.png"
+}
+images {
+  image: "/assets/images/powerups/meteorshower.png"
+}
+animations {
+  id: "player_power"
+  images {
+    image: "/assets/images/power.png"
+  }
+  playback: PLAYBACK_ONCE_FORWARD
+  fps: 60
+  flip_horizontal: 1
+  flip_vertical: 0
+}
 margin: 0
 extrude_borders: 2
 inner_padding: 0
