@@ -38,6 +38,19 @@ for zoom_factor=2,10 do
 end
 
 
+camera.add_projector(hash("RPS_ZOOM"), function(camera_id, near_z, far_z)
+	local zoomw = window_width / DISPLAY_WIDTH
+	local zoomh = window_height / DISPLAY_HEIGHT
+	local zoom = 2 * math.min(zoomw, zoomh)
+
+	local projected_width = window_width / zoom
+	local projected_height = window_height / zoom
+	local xoffset = -(projected_width - DISPLAY_WIDTH) / 2
+	local yoffset = -(projected_height - DISPLAY_HEIGHT) / 2
+	return vmath.matrix4_orthographic(xoffset, xoffset + projected_width, yoffset, yoffset + projected_height, near_z, far_z)
+end)
+
+
 function init(self)
 	self.tile_pred = render.predicate({"tile"})
 	self.gui_pred = render.predicate({"gui"})

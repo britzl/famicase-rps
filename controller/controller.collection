@@ -27,7 +27,7 @@ instances {
     }
     properties {
       id: "projection"
-      value: "FIXED_ZOOM_2"
+      value: "RPS_ZOOM"
       type: PROPERTY_TYPE_HASH
     }
   }
