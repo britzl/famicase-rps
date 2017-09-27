@@ -10,20 +10,8 @@ function init(self)
 		.back_out(transitions.slide_out_bottom, gui.EASING_INQUAD, duration, 0)
 end
 
-function final(self)
-	-- Add finalization code here
-	-- Remove this function if not needed
-end
-
-function update(self, dt)
-	-- Add update code here
-	-- Remove this function if not needed
-end
-
 function on_message(self, message_id, message, sender)
 	self.transition.handle(message_id, message, sender)
-	-- Add message-handling code here
-	-- Remove this function if not needed
 end
 
 function on_input(self, action_id, action)

@@ -1,7 +1,7 @@
 go.property("volume", 1.0)
 
 local monarch = require "monarch.monarch"
-local settings = require "utils.settings"
+local settings = require "utils.rps_settings"
 
 
 function init(self)
@@ -9,7 +9,7 @@ function init(self)
 	monarch.show(hash("menu"))
 	math.randomseed(os.time())
 	
-	if settings.music then
+	if settings.music() then
 		msg.post("sounds#music", "play_sound", { gain = 0.5 })
 	end
 end
@@ -19,7 +19,7 @@ function on_message(self, message_id, message, sender)
 		--if self.music then
 		--go.animate("music,property,playback,to,easing,duration)
 	elseif message_id == hash("play_sfx") then
-		if settings.sfx then
+		if settings.sfx() then
 			msg.post("sounds#" .. message.id, "play_sound", { gain = message.gain, delay = message.delay })
 		end
 	end

@@ -3,9 +3,8 @@ local camera = require "orthographic.camera"
 local gesture = require "game.gesture"
 local monarch = require "monarch.monarch"
 local rps = require "game.rps"
-local signal = require "ludobits.m.signal"
 local signals = require "controller.signals"
-
+local settings = require "utils.rps_settings"
 local opponents = require "game.opponents"
 
 local HEALTHBAR_WIDTH = 176
@@ -169,7 +168,7 @@ local function check_opponent_powerup()
 	return true
 end
 
-local function normal_game(message)
+local function game(message)
 	symbols = {}
 	opponent = opponents.get(message.opponent)
 	player = {
@@ -225,6 +224,7 @@ local function normal_game(message)
 		dialog_text = opponent.emotes_won[math.random(1, #opponent.emotes_won)]
 	else
 		dialog_text = opponent.emotes_lost[math.random(1, #opponent.emotes_lost)]
+		settings.unlock_next(message.opponent)
 	end
 	signals.GAME_FINISHED.trigger({ health = health })
 	show_dialog(opponent.portrait, { dialog_text })
@@ -236,7 +236,7 @@ end
 function init(self)
 	self.gesture = gesture.create(rps.GESTURES)
 	flow(function()
-		normal_game(monarch.data(hash("game")))
+		game(monarch.data(hash("game")))
 	end)
 end
 

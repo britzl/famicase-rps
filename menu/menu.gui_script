@@ -5,18 +5,18 @@ local flow = require "ludobits.m.flow"
 local signals = require "controller.signals"
 local transitions = require "monarch.transitions.gui"
 local opponents = require "game.opponents"
-local settings = require "utils.settings"
+local settings = require "utils.rps_settings"
 
 
 local function update_settings(self)
 	local music = gui.get_node("music")
-	local sfx = gui.get_node("sfx")
-	if settings.music then
+	if settings.music() then
 		gui.play_flipbook(music, "musicon")
 	else
 		gui.play_flipbook(music, "musicoff")
 	end
-	if settings.sfx then
+	local sfx = gui.get_node("sfx")
+	if settings.sfx() then
 		gui.play_flipbook(sfx, "soundon")
 	else
 		gui.play_flipbook(sfx, "soundoff")
@@ -26,28 +26,11 @@ end
 function init(self)
 	rpstheme.acquire_input()
 	self.logo = gui.get_node("logo")
-	self.training_button = gui.get_node("training/bg")
-	self.battle_button = gui.get_node("battle/bg")
+	self.play_button = gui.get_node("play/bg")
 	self.logo_pos = gui.get_position(self.logo)
-	self.training_pos = gui.get_position(self.training_button)
-	self.battle_pos = gui.get_position(self.battle_button)
+	self.play_pos = gui.get_position(self.play_button)
 	
 	update_settings(self)
-	
-	
---[[	local duration = 0.8
-	self.training_transition = transitions.create(self.training_button)
-		.show_in(transitions.slide_in_bottom, gui.EASING_OUTQUAD, duration, 0)
-		.show_out(transitions.slide_out_bottom, gui.EASING_INQUAD, duration, 0)
-	
-	self.quickbattle_transition = transitions.create(self.quickbattle_button)
-		.show_in(transitions.slide_in_bottom, gui.EASING_OUTQUAD, duration, 0)
-		.show_out(transitions.slide_out_bottom, gui.EASING_INQUAD, duration, 0)
-	
-	self.logo_transitions = transitions.create(self.logo)
-		.show_in(transitions.slide_in_top, gui.EASING_OUTQUAD, duration, 0)
-		.show_out(transitions.slide_out_top, gui.EASING_INQUAD, duration, 0)]]
-
 end
 
 function update(self, dt)
@@ -55,56 +38,36 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	--[[flow(function()
-		self.logo_transitions.handle(message_id, message, sender)
-		self.training_transition.handle(message_id, message, sender)
-		self.quickbattle_transition.handle(message_id, message, sender)
-	end)--]]
 	flow.on_message(message_id, message, sender)
 	if message_id == hash("transition_show_in") or message_id == hash("transition_back_in") then
 		gui.set_position(self.logo, self.logo_pos + vmath.vector3(0, 1000, 0))
-		gui.set_position(self.training_button, self.training_pos - vmath.vector3(0, 1000, 0))
-		gui.set_position(self.battle_button, self.battle_pos - vmath.vector3(0, 1000, 0))
+		gui.set_position(self.play_button, self.play_pos - vmath.vector3(0, 1000, 0))
 		local duration = 0.8
 		gui.animate(self.logo, gui.PROP_POSITION, self.logo_pos, gui.EASING_OUTQUAD, duration)
-		gui.animate(self.training_button, gui.PROP_POSITION, self.training_pos, gui.EASING_OUTQUAD, duration)
-		gui.animate(self.battle_button, gui.PROP_POSITION, self.battle_pos, gui.EASING_OUTQUAD, duration, 0.15, function()
+		gui.animate(self.play_button, gui.PROP_POSITION, self.play_pos, gui.EASING_OUTQUAD, duration, 0.15, function()
 			msg.post(sender, "transition_done")
 		end)
 	elseif message_id == hash("transition_show_out") or message_id == hash("transition_back_out") then
 		gui.set_position(self.logo, self.logo_pos)
-		gui.set_position(self.training_button, self.training_pos)
-		gui.set_position(self.battle_button, self.battle_pos)
+		gui.set_position(self.play_button, self.play_pos)
 		local duration = 0.8
 		gui.animate(self.logo, gui.PROP_POSITION, self.logo_pos + vmath.vector3(0, 1000, 0), gui.EASING_INQUAD, duration)
-		gui.animate(self.training_button, gui.PROP_POSITION, self.training_pos - vmath.vector3(0, 1000, 0), gui.EASING_INQUAD, duration, 0.1)
-		gui.animate(self.battle_button, gui.PROP_POSITION, self.battle_pos - vmath.vector3(0, 1000, 0), gui.EASING_INQUAD, duration, 0.05, function()
+		gui.animate(self.play_button, gui.PROP_POSITION, self.play_pos - vmath.vector3(0, 1000, 0), gui.EASING_INQUAD, duration, 0.05, function()
 			msg.post(sender, "transition_done")
 		end)
 	end
 end
 
 function on_input(self, action_id, action)
-	rpstheme.button("training", action_id, action, function()
-		monarch.show(hash("tutorial"), nil, { opponent = "tutorial", player_health = 10 })
-	end)
-	rpstheme.button("battle", action_id, action, function()
-		local opponent = opponents.BATTLE[math.random(1, #opponents.BATTLE)]
-		monarch.show(hash("game"), nil, { opponent = opponent, player_health = 20 })
+	rpstheme.button("play", action_id, action, function()
+		monarch.show(hash("prebattle"))
 	end)
 	gooey.button("music", action_id, action, function()
-		settings.music = not settings.music
-		settings.save()
+		settings.toggle_music()
 		update_settings(self)
-		if settings.music then
-			msg.post("controller:/sounds#music", "play_sound", { gain = 0.5 })
-		else
-			msg.post("controller:/sounds#music", "stop_sound")
-		end
 	end)
 	gooey.button("sfx", action_id, action, function()
-		settings.sfx = not settings.sfx
-		settings.save()
+		settings.toggle_sfx()
 		update_settings(self)
 	end)
 	gooey.button("about", action_id, action, function()

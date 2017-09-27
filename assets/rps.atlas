@@ -1,26 +1,20 @@
 images {
-  image: "/assets/images/paper.png"
+  image: "/assets/images/symbols/paper.png"
 }
 images {
-  image: "/assets/images/rock.png"
+  image: "/assets/images/symbols/rock.png"
 }
 images {
   image: "/assets/images/transparent1px.png"
 }
 images {
-  image: "/assets/images/heart.png"
+  image: "/assets/images/panel/opponent_panel.png"
 }
 images {
-  image: "/assets/images/opponent_panel.png"
-}
-images {
-  image: "/assets/images/player_panel.png"
+  image: "/assets/images/panel/player_panel.png"
 }
 images {
   image: "/assets/images/panel.png"
-}
-images {
-  image: "/assets/images/health.png"
 }
 images {
   image: "/assets/images/star1.png"
@@ -35,10 +29,10 @@ images {
   image: "/assets/images/button.png"
 }
 images {
-  image: "/assets/images/belowhealthbar.png"
+  image: "/assets/images/panel/belowhealthbar.png"
 }
 images {
-  image: "/assets/images/healthbar.png"
+  image: "/assets/images/panel/healthbar.png"
 }
 images {
   image: "/assets/images/portraits/borg.png"
@@ -53,7 +47,7 @@ images {
   image: "/assets/images/portraits/threeeye.png"
 }
 images {
-  image: "/assets/images/power.png"
+  image: "/assets/images/panel/power.png"
 }
 images {
   image: "/assets/images/powerups/meteorshower.png"
@@ -65,48 +59,51 @@ images {
   image: "/assets/images/powerups/cloakingdevice.png"
 }
 images {
-  image: "/assets/images/hidden.png"
+  image: "/assets/images/symbols/hidden.png"
 }
 images {
   image: "/assets/images/logo.png"
 }
 images {
-  image: "/assets/images/soundoff.png"
+  image: "/assets/images/icons/soundoff.png"
 }
 images {
-  image: "/assets/images/soundon.png"
+  image: "/assets/images/icons/soundon.png"
 }
 images {
-  image: "/assets/images/musicoff.png"
+  image: "/assets/images/icons/musicoff.png"
 }
 images {
-  image: "/assets/images/musicon.png"
+  image: "/assets/images/icons/musicon.png"
 }
 images {
-  image: "/assets/images/scissors.png"
+  image: "/assets/images/symbols/scissors.png"
 }
 images {
-  image: "/assets/images/about.png"
+  image: "/assets/images/icons/about.png"
 }
 images {
   image: "/assets/images/defold_120.png"
 }
 images {
-  image: "/assets/images/github.png"
+  image: "/assets/images/icons/github.png"
 }
 images {
-  image: "/assets/images/twoface.png"
+  image: "/assets/images/portraits/twoface.png"
 }
 images {
-  image: "/assets/images/alien.png"
+  image: "/assets/images/portraits/alien.png"
 }
 images {
-  image: "/assets/images/mohawk.png"
+  image: "/assets/images/portraits/mohawk.png"
+}
+images {
+  image: "/assets/images/portraits/trainer.png"
 }
 animations {
   id: "player_power"
   images {
-    image: "/assets/images/power.png"
+    image: "/assets/images/panel/power.png"
   }
   playback: PLAYBACK_ONCE_FORWARD
   fps: 60
