@@ -23,11 +23,21 @@ end
 
 local function update_opponent()
 	msg.post("/opponent#portrait", "play_animation", { id = opponent.portrait })
-	label.set_text("opponent#text", opponent.name)
+	label.set_text("opponent#name", opponent.name)
 	local ratio = opponent.health / opponent.max_health
 	go.set_position(vmath.vector3(-HEALTHBAR_WIDTH + (HEALTHBAR_WIDTH * ratio), 0, 0), "opponent_health")
 	for i=1,3 do
 		msg.post("opponent#power" .. i, opponent.power >= i and "enable" or "disable")
+	end
+end
+
+local function opponent_emote()
+	if math.random(1,3) == 3 then
+		flow.parallel(function()
+			label.set_text("opponent#emote", opponent.emotes[math.random(1, #opponent.emotes)])
+			flow.delay(3)
+			label.set_text("opponent#emote", "")
+		end)
 	end
 end
 
@@ -57,6 +67,7 @@ local function damage_player(symbol)
 	player.health = player.health - amount
 	update_player()
 	flash_sprite("/player_health#full")
+	opponent_emote()
 end
 
 local function power_opponent()

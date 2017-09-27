@@ -22,6 +22,14 @@ M.TUTORIAL = { "tutorial" }
 
 M.BATTLE = { "borg", "threeeye", "grunt" }
 
+local emotes = {
+	"You're sleepy now",
+	"Your silhouette is so stationary",
+	"It's confusing these days",
+	"Moondust will cover you",
+	"This chaos is killing me",
+}
+
 local opponents = {
 	tutorial = {
 		name = "The Trainer",
@@ -43,7 +51,7 @@ local opponents = {
 		pattern = "RPS",
 		damage = { [rps.ROCK] = 1, [rps.PAPER] = 1, [rps.SCISSORS] = 1 },
 		powerups = { hash("meteorshower"), hash("papercut"), hash("cloakingdevice") },
-		emotes = { "" },
+		emotes = emotes,
 		emotes_won = { "If it bleeds, we can kill it", "Take that you sack of meat!" },
 		emotes_lost = { "Syntax error!", "Does not compute!" },
 	},
@@ -56,8 +64,9 @@ local opponents = {
 		pattern = "RPS",
 		damage = { [rps.ROCK] = 1, [rps.PAPER] = 1, [rps.SCISSORS] = 1 },
 		powerups = { hash("meteorshower"), hash("papercut"), hash("cloakingdevice") },
-		emotes_won = { "Take that you filthy Terran!" },
-		emotes_lost = { "Curse you and your dirty socks!" },
+		emotes = emotes,
+		emotes_won = { "Take that you filthy Terran!", "Weak Terrans are no match for my might!" },
+		emotes_lost = { "Curse you and your dirty socks!", "You stink worse than old cheese!" },
 	},
 	grunt = {
 		name = "Gorkan the Grunt",
@@ -68,7 +77,7 @@ local opponents = {
 		pattern = "RPS",
 		damage = { [rps.ROCK] = 1, [rps.PAPER] = 1, [rps.SCISSORS] = 1 },
 		powerups = { hash("meteorshower"), hash("papercut"), hash("cloakingdevice") },
-		emotes_powerup = { "" },
+		emotes = emotes,
 		emotes_won = { "You hit like a vegetarian!" },
 		emotes_lost = { "Whaaaaargh! That hurt!" },
 	},
