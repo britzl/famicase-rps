@@ -3,6 +3,14 @@ local opponents = require "game.opponents"
 
 local M = {}
 
+if settings.music == nil then
+	settings.music = true
+end
+
+if settings.sfx == nil then
+	settings.sfx = true
+end
+
 settings.unlocks = settings.unlocks or {}
 settings.save()
 
