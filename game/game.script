@@ -14,6 +14,22 @@ local opponent
 local player
 local symbols
 
+local function get_closest_symbol()
+	local closest = nil
+	local closest_distance = 0
+	for id,symbol in pairs(symbols) do
+		if not closest then
+			closest = symbol
+			closest_distance = go.get_position(id).y
+		end
+		local distance = go.get_position(id).y
+		if distance < closest_distance then
+			closest = symbol
+			closest_distance = distance
+		end
+	end
+	return closest
+end
 
 local function show_dialog(portrait, text)
 	monarch.show(hash("dialog"), nil, { text = text, portrait = portrait })
@@ -87,14 +103,9 @@ end
 
 local function spawn_opponent_symbol(symbol)
 	local id = rps.spawn_symbol(symbol, nil, { hidden = opponent.cloakingdevice })
-	table.insert(symbols, { id = id, symbol = symbol })
+	symbols[id] = { id = id, symbol = symbol }
 	go.animate(id, "position.y", go.PLAYBACK_ONCE_FORWARD, 50, go.EASING_LINEAR, opponent.speed, 0, function()
-		for i,s in pairs(symbols) do
-			if s.id == id then
-				table.remove(symbols, i)
-				break
-			end
-		end
+		symbols[id] = nil
 		go.delete(id)
 		damage_player(symbol)
 		power_opponent()
@@ -229,6 +240,7 @@ local function game(message)
 	signals.GAME_FINISHED.trigger({ health = health })
 	show_dialog(opponent.portrait, { dialog_text })
 	flow.delay(1)
+	print("showing menu")
 	monarch.show(hash("menu"), { clear = true })
 end
 
@@ -267,7 +279,7 @@ function on_input(self, action_id, action)
 		go.animate(id, "position", go.PLAYBACK_ONCE_PINGPONG, vmath.vector3(160, 200, 0), go.EASING_INOUTSINE, 1, 0, function()
 			go.delete(id)
 		end)
-		local closest = table.remove(symbols, 1)
+		local closest = get_closest_symbol()
 		if closest then
 			local outcome = rps.evaluate(g.symbol, closest.symbol)
 			if outcome == rps.WIN then
@@ -278,6 +290,7 @@ function on_input(self, action_id, action)
 				power_opponent()
 			end
 			go.delete(closest.id)
+			symbols[closest.id] = nil
 		end
 	end
 end
